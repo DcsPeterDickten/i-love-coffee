@@ -16,15 +16,15 @@ export class CoffeesService {
         return this.coffees;
     }
 
-    findOne(id: string): Coffee {
-        return this.coffees.find(c => c.id === +id);
+    findOne(id: number): Coffee {
+        return this.coffees.find(c => c.id === id);
     }
 
     create(createCoffeeDto: any) {
         this.coffees.push(createCoffeeDto);
     }
 
-    update(id: string, updateCoffeeDto: any) {
+    update(id: number, updateCoffeeDto: any) {
         const existing = this.findOne(id);
         if (existing) {
             this.remove(id);
@@ -32,7 +32,7 @@ export class CoffeesService {
         }
     }
 
-    remove(id: string) {
-        this.coffees = this.coffees.filter(c => c.id !== +id);
+    remove(id: number) {
+        this.coffees = this.coffees.filter(c => c.id !== id);
     }
 }
