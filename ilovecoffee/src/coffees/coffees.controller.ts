@@ -29,6 +29,17 @@ export class CoffeesController {
         return this.coffeeService.create(createCoffeeDto);
     }
 
+    @Post('recommend/:id')
+    async recommend(@Param('id') id: number) {
+
+        const coffee = await this.coffeeService.findOne(id);
+        if (!coffee) {
+            throw new NotFoundException(`Kaffee Nr. ${id} nicht gefunden`);
+        }
+
+        return this.coffeeService.recommendCoffee(coffee);
+    }
+
     @Patch(':id')
     update(@Param('id') id: number, @Body() updateCoffeeDto: UpdateCoffeeDto) {
         return this.coffeeService.update(id, updateCoffeeDto);
