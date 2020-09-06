@@ -23,10 +23,11 @@ export class CoffeesService {
 
         @Inject(COFFEE_BRANDS)
         private allCoffeeBrands: string[]
-    ) { }
+    ) {
+        console.log('allCoffeeBrands', this.allCoffeeBrands);
+    }
 
     findAll(paginationQuery: PaginationQueryDto) {
-        console.log(this.allCoffeeBrands);
         const { limit, offset } = paginationQuery;
         return this.coffeeRepository.find({
             relations: ['flavors'],
