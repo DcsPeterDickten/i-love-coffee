@@ -6,23 +6,21 @@ import { Coffee } from './entities/coffee.entity';
 import { Flavor } from './entities/flavor.entity';
 import { Event } from '../events/entities/event.entity';
 import { COFFEE_BRANDS } from './coffee.constants';
+import { Connection } from 'typeorm';
 
-@Injectable()
-export class CoffeeBrandsFactory {
-    create() {
-        return ['Starbucks', 'TCHIBO'];
-    }
+async function getData(connection: Connection): Promise<string[]> {
+    return await Promise.resolve(['Starbucks', 'Tchibo']);
 }
+
 @Module({
     imports: [TypeOrmModule.forFeature([Coffee, Flavor, Event])],
     controllers: [CoffeesController],
     providers: [
         CoffeesService,
-        CoffeeBrandsFactory,
         {
             provide: COFFEE_BRANDS,
-            useFactory: (brandsFactory: CoffeeBrandsFactory) => brandsFactory.create(),
-            inject: [CoffeeBrandsFactory]
+            useFactory: getData,
+            inject: [Connection]
         }
     ],
     exports: [CoffeesService]
