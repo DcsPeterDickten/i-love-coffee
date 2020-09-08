@@ -31,8 +31,7 @@ export class CoffeesService {
     }
 
     findAll(paginationQuery: PaginationQueryDto) {
-
-        const host = this.configService.get<string>('DATABASE_HOST');
+        const host = this.configService.get('database.host', 'localhost');
         console.log({ host });
 
         const { limit, offset } = paginationQuery;
