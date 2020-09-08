@@ -9,10 +9,7 @@ import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({
-      envFilePath: ['.enviroment', '.env'],
-      ignoreEnvFile: false
-    }),
+    ConfigModule.forRoot(),
     CoffeesModule, TypeOrmModule.forRoot({
       type: 'postgres',
       host: process.env.DATABASE_HOST,
