@@ -8,13 +8,16 @@ import { Event } from '../events/entities/event.entity';
 import { COFFEE_BRANDS } from './coffee.constants';
 import { Connection } from 'typeorm';
 import { ConfigModule } from '@nestjs/config';
+import coffeesConfig from './config/coffees.config';
 
 async function getData(connection: Connection): Promise<string[]> {
     return await Promise.resolve(['Starbucks', 'Tchibo']);
 }
 
 @Module({
-    imports: [ConfigModule, TypeOrmModule.forFeature([Coffee, Flavor, Event])],
+    imports: [
+        ConfigModule.forFeature(coffeesConfig),
+        TypeOrmModule.forFeature([Coffee, Flavor, Event])],
     controllers: [CoffeesController],
     providers: [
         CoffeesService,
