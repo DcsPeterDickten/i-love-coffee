@@ -22,10 +22,10 @@ export class CoffeesService {
 
         private readonly connection: Connection,
 
-        @Inject(COFFEE_BRANDS)
-        private allCoffeeBrands: string[],
+        // @Inject(COFFEE_BRANDS)
+        // private allCoffeeBrands: string[],
 
-        private readonly configService: ConfigService
+        // private readonly configService: ConfigService
     ) { }
 
     findAll(paginationQuery: PaginationQueryDto) {
