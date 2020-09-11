@@ -21,11 +21,6 @@ export class CoffeesService {
         private readonly flavorRepository: Repository<Flavor>,
 
         private readonly connection: Connection,
-
-        // @Inject(COFFEE_BRANDS)
-        // private allCoffeeBrands: string[],
-
-        // private readonly configService: ConfigService
     ) { }
 
     findAll(paginationQuery: PaginationQueryDto) {
