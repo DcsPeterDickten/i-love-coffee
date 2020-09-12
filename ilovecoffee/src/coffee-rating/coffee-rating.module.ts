@@ -8,8 +8,10 @@ import { DatabaseModule } from '../database/database.module';
     DatabaseModule.register({
       type: 'postgres',
       host: 'localhost',
-      password: 'password',
-      port: 5432
+      port: 5432,
+      username: 'postgres',
+      password: 'pass123',
+      database: 'postgres',
     }),
     CoffeesModule],
   providers: [CoffeeRatingService]
