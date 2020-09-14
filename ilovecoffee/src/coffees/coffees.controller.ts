@@ -1,34 +1,58 @@
-import { Controller, Get, Param, Post, Body, Patch, Delete, Query } from '@nestjs/common';
+import { Controller, Get, Param, Post, Body, Patch, Delete, Query, NotFoundException } from '@nestjs/common';
 import { CoffeesService } from './coffees.service';
+import { CreateCoffeeDto } from './dto/create-coffee.dto';
+import { UpdateCoffeeDto } from './dto/update-coffee.dto';
+import { PaginationQueryDto } from '../common/dto/pagination-query.dto';
+import { Public } from '../common/decorators/public.decorator';
+import { ParseIntPipe } from '../common/pipes/parse-int.pipe';
+import { ApiForbiddenResponse, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('coffees')
 @Controller('coffees')
 export class CoffeesController {
 
     constructor(private readonly coffeeService: CoffeesService) { }
 
+    @ApiForbiddenResponse({ description: 'Forbidden.' })
     @Get('')
-    findAll(@Query() paginationQuery): any {
-        // const { limit, offset } = paginationQuery; // später
-        return this.coffeeService.findAll();
+    @Public()
+    findAll(@Query() paginationQuery: PaginationQueryDto): any {
+        return this.coffeeService.findAll(paginationQuery);
     }
 
     @Get(':id')
-    findOne(@Param('id') id: string): any {
-        return this.coffeeService.findOne(id);
+    @Public()
+    findOne(@Param('id', ParseIntPipe) id: number): any {
+        const coffee = this.coffeeService.findOne(id);
+        if (!coffee) {
+            throw new NotFoundException(`Kaffee Nr. ${id} nicht gefunden`);
+        }
+        return coffee;
     }
 
     @Post()
-    create(@Body() body) {
-        return this.coffeeService.create(body);
+    create(@Body() createCoffeeDto: CreateCoffeeDto) {
+        return this.coffeeService.create(createCoffeeDto);
+    }
+
+    @Post('recommend/:id')
+    async recommend(@Param('id') id: number) {
+
+        const coffee = await this.coffeeService.findOne(id);
+        if (!coffee) {
+            throw new NotFoundException(`Kaffee Nr. ${id} nicht gefunden`);
+        }
+
+        return this.coffeeService.recommendCoffee(coffee);
     }
 
     @Patch(':id')
-    update(@Param('id') id: string, @Body() body: any) {
-        return this.coffeeService.update(id, body);
+    update(@Param('id') id: number, @Body() updateCoffeeDto: UpdateCoffeeDto) {
+        return this.coffeeService.update(id, updateCoffeeDto);
     }
 
     @Delete(':id')
-    delete(@Param('id') id: string) {
+    delete(@Param('id') id: number) {
         return this.coffeeService.remove(id);
     }
 }
