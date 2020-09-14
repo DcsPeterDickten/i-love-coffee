@@ -7,10 +7,9 @@ export class VatService {
     private client: ClientProxy;
     constructor() {
         this.client = ClientProxyFactory.create({
-            transport: Transport.TCP,
+            transport: Transport.REDIS,
             options: {
-                host: '127.0.0.1',
-                port: 3333
+                url: 'redis://localhost:6379'
             }
         });
     }
